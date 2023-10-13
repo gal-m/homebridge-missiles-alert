@@ -74,8 +74,6 @@ HttpMotion.prototype = {
                         return differenceInSeconds <= DIFFERENCE_IN_SECONDS && alert.category === 1 && isNewAlert;
                     });
 
-                    this.log("Recent alarms in the last 5 seconds: " + recentAlerts.map(a => a.alertDate));
-
                     if (this.city !== "all") {
                         value = recentAlerts.some(alert => alert.data === this.city);
                     } else {

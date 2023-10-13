@@ -1,6 +1,6 @@
 {
   "name": "homebridge-missiles-alert",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "homebridge plugin for missiles alerts in Israel",
   "license": "ISC",
   "keywords": [
@@ -26,5 +26,6 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-  }
+  },
+  "devDependencies": {}
 }
