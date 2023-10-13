@@ -1,5 +1,4 @@
 {
-  
   "name": "homebridge-missiles-alert",
   "version": "1.0.0",
   "description": "homebridge plugin for missiles alerts in Israel",
@@ -21,11 +20,11 @@
     "url": "git://https://github.com/gal-m/homebridge-missiles-alert.git"
   },
   "dependencies": {
+    "moment-timezone": "^0.5.43",
     "request": "^2.0.0"
   },
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "devDependencies": {}
+  }
 }
