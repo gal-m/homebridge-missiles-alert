@@ -1,0 +1,22 @@
+{
+  "pluginAlias": "MissilesAlert",
+  "pluginType": "accessory",
+  "singular": true,
+  "schema": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Name",
+        "type": "string",
+        "default": "Missiles Alert Sensor",
+        "required": true
+      },
+      "city": {
+        "title": "City",
+        "type": "string",
+        "default": "רמת גן - מערב",
+        "required": true
+      }
+    }
+  }
+}
