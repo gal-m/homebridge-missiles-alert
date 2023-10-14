@@ -21,3 +21,6 @@ See the sample-config.file to see an example of working accessory. Following, al
 
  * ```name``` Accessory name.
  * ```city``` The name of the city (exactly as it says in the pikud horef's site).
+
+
+## Many thanks to https://www.tzevaadom.co.il that provide the api for the project
