@@ -14,7 +14,10 @@
         {
             "accessory": "MissilesAlerts",
             "name": "Missiles Alerts Sensor",
-            "city": "רמת גן - מערב"
+            "cities": [
+                "יפו",
+                "תל אביב"
+            ]
         }
     ]
 }

@@ -1,6 +1,6 @@
 {
   "name": "homebridge-missiles-alert",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "homebridge plugin for missiles alerts in Israel",
   "license": "ISC",
   "keywords": [

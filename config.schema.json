@@ -11,10 +11,13 @@
         "default": "Missiles Alert Sensor",
         "required": true
       },
-      "city": {
-        "title": "City",
-        "type": "string",
-        "default": "",
+      "cities": {
+        "title": "Cities",
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "default": [],
         "required": true
       }
     }

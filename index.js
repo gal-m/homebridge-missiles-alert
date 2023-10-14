@@ -1,17 +1,13 @@
 var Service, Characteristic;
 const request = require('request');
-const moment = require('moment-timezone');
 const DEF_INTERVAL = 2000; //2s
-const DIFFERENCE_IN_SECONDS = 5;
 
-const URL = "https://www.oref.org.il/WarningMessages/History/AlertsHistory.json";
+const URL = "https://api.tzevaadom.co.il/notifications";
 const HTTP_METHOD = "GET";
 const HEADERS = {
-    "Host": "www.oref.org.il",
     "Connection": "close",
     "X-Requested-With": "XMLHttpRequest",
     "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-    "Referer": "https://www.oref.org.il/12481-he/Pakar.aspx"
 };
 
 module.exports = function (homebridge) {
@@ -22,7 +18,12 @@ module.exports = function (homebridge) {
 
 function HttpMotion(log, config) {
     this.log = log;
-    this.lastAlertDate = null;
+    this.lastNotificationId = null;
+
+    // Error counters
+    this.httpErrorResponseCount = 0;
+    this.jsonParseErrorCount = 0;
+    this.updateStateResponsePendingCount = 0;
 
     // url info
     this.url = URL;
@@ -33,7 +34,7 @@ function HttpMotion(log, config) {
     this.model = "MissilesAlerts";
     this.serial = "RVU729";
     this.update_interval = Number(config["update_interval"] || DEF_INTERVAL);
-    this.city = config["city"] || "all";
+    this.cities = config["cities"] || ["all"];
 
     // Internal variables
     this.last_state = false;
@@ -43,9 +44,14 @@ function HttpMotion(log, config) {
 HttpMotion.prototype = {
     updateState: function () {
         if (this.waiting_response) {
-            this.log('Avoid updateState as previous response has not arrived yet');
+            this.updateStateResponsePendingCount++;
+            if (this.updateStateResponsePendingCount >= 10) {
+                this.log('Avoid updateState as previous response has not arrived yet occurred 10 times in a row');
+                this.updateStateResponsePendingCount = 0;
+            }
             return;
         }
+        this.updateStateResponsePendingCount = 0;
         this.waiting_response = true;
 
         var ops = {
@@ -57,40 +63,40 @@ HttpMotion.prototype = {
         request(ops, (error, res, body) => {
             var value = false;
             var recentAlerts = [];
-            
+
             if (error) {
-                this.log('HTTP bad response (' + ops.uri + '): ' + error.message);
+                this.httpErrorResponseCount++;
+                if (this.httpErrorResponseCount >= 10) {
+                    this.log('HTTP bad response (' + ops.uri + ') occurred 10 times in a row: ' + error.message);
+                    this.httpErrorResponseCount = 0;  // reset the counter
+                }
             } else if (!body) {
                 error = true;
             } else {
                 try {
                     var alerts = JSON.parse(body);
-                    var now = moment.tz("Asia/Jerusalem");
-                    recentAlerts = alerts.filter(alert => {
-                        var alertTime = moment.tz(alert.alertDate, "Asia/Jerusalem");
-                        var differenceInSeconds = moment.duration(now.diff(alertTime)).asSeconds();
-                        var isNewAlert = this.lastAlertDate ? alertTime.isAfter(this.lastAlertDate) : true;
 
-                        return differenceInSeconds <= DIFFERENCE_IN_SECONDS && alert.category === 1 && isNewAlert;
+                    alerts.forEach(alert => {
+
+                        // Check if the alert hasn't been processed before and contains the desired city
+                        if (this.lastNotificationId !== alert.notificationId && 
+                            (this.cities.includes("all") || alert.cities.some(city => this.cities.includes(city)))) { 
+                            value = true;
+                            this.lastNotificationId = alert.notificationId;
+                            this.log("Your city is under attack! Get to the shelters right now!");
+                        }
                     });
 
-                    if (this.city !== "all") {
-                        value = recentAlerts.some(alert => alert.data === this.city);
-                    } else {
-                        value = recentAlerts.length > 0;
-                    }
+                    this.httpErrorResponseCount = 0;
+                    this.jsonParseErrorCount = 0;
                 } catch (parseErr) {
-                    this.log('Error processing received information: ' + parseErr.message);
+                    this.jsonParseErrorCount++;
+                    if (this.jsonParseErrorCount >= 10) {
+                        this.log('Error processing received information occurred 10 times in a row: ' + parseErr.message);
+                        this.jsonParseErrorCount = 0;
+                    }
                     error = parseErr;
                 }
-            }
-
-            if (value) {
-                this.log("Your city is under attack! Get to the shelters right now!");
-            }
-
-            if (recentAlerts.length > 0) {
-                this.lastAlertDate = moment.tz(recentAlerts[0].alertDate, "Asia/Jerusalem"); // Store the most recent alertDate
             }
 
             this.motionService
