@@ -14,7 +14,7 @@
       "city": {
         "title": "City",
         "type": "string",
-        "default": "רמת גן - מערב",
+        "default": "",
         "required": true
       }
     }
