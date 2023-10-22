@@ -13,7 +13,7 @@ const HEADERS = {
 module.exports = function (homebridge) {
     Service = homebridge.hap.Service;
     Characteristic = homebridge.hap.Characteristic;
-    homebridge.registerAccessory("homebridge-missilesalert", "MissilesAlert", HttpMotion);
+    homebridge.registerAccessory("homebridge-missiles-alert", "MissilesAlert", HttpMotion);
 }
 
 function HttpMotion(log, config) {
@@ -116,7 +116,7 @@ HttpMotion.prototype = {
     },
 
     getServices: function () {
-        this.log("City is set to " + this.city);
+        this.log("Cities are set to " + this.cities.join(", "));
         this.informationService = new Service.AccessoryInformation();
         this.informationService
             .setCharacteristic(Characteristic.Manufacturer, this.manufacturer)
