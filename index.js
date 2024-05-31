@@ -45,8 +45,7 @@ HttpMotion.prototype = {
     updateState: function () {
         if (this.waiting_response) {
             this.updateStateResponsePendingCount++;
-            if (this.updateStateResponsePendingCount >= 10) {
-                this.log('Avoid updateState as previous response has not arrived yet occurred 10 times in a row');
+            if (this.updateStateResponsePendingCount >= 20) {
                 this.updateStateResponsePendingCount = 0;
             }
             return;
