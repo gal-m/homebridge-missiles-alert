@@ -1,31 +1,39 @@
 {
   "name": "homebridge-missiles-alert",
-  "version": "2.0.2",
-  "description": "homebridge plugin for missiles alerts in Israel",
+  "version": "3.0.0",
+  "description": "Homebridge plugin for Israeli missile alerts with HomeKit motion sensor and Apple TV Picture-in-Picture notifications",
   "license": "ISC",
   "keywords": [
     "homebridge-plugin",
-    "http",
-    "sensor",
     "red-alert",
-    "missiles-alert"
+    "missiles-alert",
+    "israel",
+    "apple-tv",
+    "doorbell",
+    "camera",
+    "pip",
+    "homekit"
   ],
   "engines": {
-    "node": ">=0.12.0",
-    "homebridge": ">=0.2.0"
+    "node": ">=18.0.0",
+    "homebridge": ">=1.8.0"
   },
-  "author": "@gal-m",
+  "author": "Gal Mirkin (@gal-m)",
+  "contributors": [
+    {
+      "name": "giblix",
+      "url": "https://github.com/giblix"
+    }
+  ],
   "repository": {
     "type": "git",
-    "url": "git://https://github.com/gal-m/homebridge-missiles-alert.git"
+    "url": "https://github.com/gal-m/homebridge-missiles-alert.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gal-m/homebridge-missiles-alert/issues"
   },
   "dependencies": {
-    "moment-timezone": "^0.5.43",
-    "request": "^2.0.0"
+    "request": "^2.88.2"
   },
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "devDependencies": {}
+  "main": "index.js"
 }
