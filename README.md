@@ -15,6 +15,7 @@ Let’s hope you never actually need it.
 - **Real-time Monitoring** - Checks for active alerts continuously
 - **HomeKit Automations** - Use alerts to trigger scenes and devices
 - **Simple Setup** - Lightweight accessory configuration
+- **Apple TV PiP Notifications** - Optional doorbell camera that shows alert overlay on Apple TV while watching Netflix or other apps
 
 ---
 
@@ -95,6 +96,46 @@ When a matching alert is detected:
 1. The HomeKit motion sensor turns **on**
 2. Any HomeKit automations linked to that sensor are triggered
 3. When the alert is no longer active, the sensor resets
+
+---
+
+## Apple TV Picture-in-Picture Notifications (Optional)
+
+This plugin supports **Picture-in-Picture alert overlays on Apple TV** - even while watching Netflix, YouTube, or other apps.
+
+When an alert triggers, a doorbell camera notification appears as a PiP overlay showing the alert message in Hebrew.
+
+### Setup
+
+**1. Add the camera platform to your `config.json`:**
+
+```json
+{
+  "platforms": [
+    {
+      "platform": "MissilesAlertCamera",
+      "name": "Siren Camera"
+    }
+  ]
+}
+```
+
+**2. Restart Homebridge**
+
+**3. Add the camera to HomeKit:**
+- Open the **Home** app on iPhone/iPad
+- Tap **+** → **Add Accessory** → **More Options**
+- Select "Siren Camera" and enter your Homebridge pairing code
+
+### Disabling Apple TV Notifications
+
+The Apple TV feature is **completely optional**. If you don't want it, simply don't add the `MissilesAlertCamera` platform to your config. The motion sensor works independently.
+
+### Requirements
+
+- Apple TV 4K or Apple TV HD
+- Apple TV linked to the same HomeKit home
+- ffmpeg installed on the Homebridge server (`sudo apt install ffmpeg` on Raspberry Pi)
 
 ---
 
